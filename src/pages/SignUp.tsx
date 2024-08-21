@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SignUpInput } from "../types/signupInput";
 
 export default function SignUp() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState<SignUpInput>({
+    userName: "",
+    password: "",
+    email: "",
+    confirmPassword: "",
+  });
   const [error, setError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const navigate = useNavigate();
   const handleChange = (e: any) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -12,16 +19,18 @@ export default function SignUp() {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const res = await fetch("/api/auth/signup", {
+      const { confirmPassword, ...rest } = formData;
+      const res = await fetch("/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(rest),
       });
       const data = await res.json();
       setIsLoading(false);
       if (data.error) setError(true);
+      navigate("/sign-in");
     } catch (error) {
       setIsLoading(false);
       setError(true);
@@ -63,7 +72,6 @@ export default function SignUp() {
         />
 
         <button
-          disabled
           className="bg-slate-700 text-white p-3 rounded-lg uppercase
         hover:opacity-95 disabled:opacity-80"
         >
