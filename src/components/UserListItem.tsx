@@ -1,18 +1,7 @@
-import {
-  Check,
-  CheckCheck,
-  Delete,
-  EggFriedIcon,
-  Loader,
-  MessageCircle,
-  Plus,
-  User,
-  X,
-} from "lucide-react";
-import React, { useState } from "react";
+import { Check, Loader, MessageCircle, Plus, X } from "lucide-react";
+import { useState } from "react";
 import defaultProfilePic from "../assets/default-user.jpg";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import {
   acceptFriendRequest,
   addFriend,
@@ -22,7 +11,6 @@ import {
   unfriendUser,
 } from "../utils/api";
 import { toast } from "sonner";
-import { Button } from "./ui/button";
 import AcceptInvitationButton from "./AcceptInvitationButton";
 
 type Props = {
@@ -62,7 +50,6 @@ const AddButtonAction = ({ invitationStatus }: any) => {
 
 const UserListItem = ({ key, user }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { accessToken } = useSelector((state: any) => state.auth);
   const [itemListUser, setItemListUser] = useState(user);
 
   const invitationStatusText = () => {

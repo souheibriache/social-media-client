@@ -1,12 +1,10 @@
-import React from "react";
-
 type Props = {
   _id: string;
   userName: string;
   picture: string;
 };
 
-export default function UserProfile({ _id, userName, picture }: Props) {
+export default function UserProfile({ userName, picture }: Props) {
   return (
     <div className="bg-slate-50 rounded-md h-24 flex flex-row items-center p-3 shadow-md">
       <img

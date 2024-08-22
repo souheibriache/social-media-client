@@ -8,10 +8,8 @@ import OtherUserProfile from "../components/OtherUserProfile";
 
 const Profile = () => {
   const { userId } = useParams();
-  const { accessToken } = useSelector((state: any) => state.auth);
   const { currentUser } = useSelector((state: any) => state.user);
   const [userProfile, setUserProfile] = useState<any>(null);
-  const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

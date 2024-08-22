@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 
 type Props = {};
 
-const AuthRoute = (props: Props) => {
+const AuthRoute = ({}: Props) => {
   const { currentUser } = useSelector((state: any) => state.user);
   const { accessToken, refreshToken } = useSelector((state: any) => state.auth);
 

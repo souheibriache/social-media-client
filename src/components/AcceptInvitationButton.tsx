@@ -1,5 +1,5 @@
-import { ArrowDown, Check, Menu, X } from "lucide-react";
-import React, { useState } from "react";
+import { Check, Menu, X } from "lucide-react";
+import { useState } from "react";
 
 type Props = {
   handleUser: (action?: "Accept" | "Reject") => void;
