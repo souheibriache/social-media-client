@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import defaultPicture from "../assets/default-user.jpg";
 import { Camera } from "lucide-react";
-import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import fetchWithAuth from "../utils/fetchWrapper";
 

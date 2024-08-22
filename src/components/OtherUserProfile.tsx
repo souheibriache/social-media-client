@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 import defaultProfilePic from "../assets/default-user.jpg";
 import {
@@ -62,7 +62,7 @@ const OtherUserProfile = ({ user }: Props) => {
   const dispatch = useDispatch();
 
   const handleChatButton = async () => {
-    const chat = await getChatByRecipientId(user._id)
+    await getChatByRecipientId(user._id)
       .then((response) => {
         console.log({ response });
         dispatch(openChat({ chat: response.data }));

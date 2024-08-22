@@ -1,13 +1,11 @@
 import { Loader, SearchIcon, X } from "lucide-react";
 import React, { useState } from "react";
 import UserListItem from "./UserListItem";
-import { useSelector } from "react-redux";
 import { searchUsers } from "../utils/api";
 
 type Props = {};
 
-const Search = (props: Props) => {
-  const { accessToken } = useSelector((state: any) => state.auth);
+const Search = ({}: Props) => {
   const [usersList, setUsersList] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [isLoading, setIsLoading] = useState<boolean>(false);

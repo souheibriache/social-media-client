@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatComponent from "./ChatComponent";
 import { ChatType, openChat } from "../redux/auth/chat-slice";
@@ -8,7 +8,7 @@ import { getChatByRecipientId } from "../utils/api";
 
 type Props = {};
 
-const GlobalChatComponent = (props: Props) => {
+const GlobalChatComponent = ({}: Props) => {
   const { currentUser } = useSelector((state: any) => state.user);
   const { chatSessions } = useSelector((state: any) => state.chat);
   const dispatch = useDispatch();

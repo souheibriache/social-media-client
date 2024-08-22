@@ -2,9 +2,8 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchUserSuccess } from "../redux/auth/user-slice";
-import { completeSignup, refreshAccessToken } from "../utils/api";
+import { completeSignup } from "../utils/api";
 import { signInSuccess } from "../redux/auth/auth-slice";
-import { jwtDecode } from "jwt-decode"; // Correcting the import
 import { toast } from "sonner";
 
 export default function CompleteSignUp() {
