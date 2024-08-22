@@ -5,13 +5,12 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -20,26 +19,26 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - name: Install Dependencies
-      run: npm install
-    - name: Build React App
-      run: npm run build
-    - name: Add SSH Key to Agent
-      uses: webfactory/ssh-agent@v0.5.4
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_2 }}
-    - name: Deploy React App to Linux CentOS 7
-      run: |
-        echo "Current Working Directory: $(pwd)"
-        echo "Contents of the directory: $(ls -la)"
-        echo "Starting deployment....."
-        ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /usr/share/nginx/portfolio/build && rm -rf * && exit"
-        scp -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} -r ./build/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/share/nginx/portfolio/build
-        echo "Deployment completed."
-        
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - name: Install Dependencies
+        run: npm install
+      - name: Build React App
+        run: npm run build
+      - name: Add SSH Key to Agent
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_2 }}
+      - name: Deploy React App to Linux CentOS 7
+        run: |
+          echo "Current Working Directory: $(pwd)"
+          echo "Contents of the directory: $(ls -la)"
+          echo "Starting deployment....."
+          echo ${{secrets.SSH_HOST}}
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /usr/share/nginx/portfolio/build && rm -rf * && exit"
+          scp -o StrictHostKeyChecking=no -P ${{ secrets.SSH_PORT }} -r ./build/* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/usr/share/nginx/portfolio/build
+          echo "Deployment completed."
