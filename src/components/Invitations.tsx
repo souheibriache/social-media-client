@@ -50,7 +50,7 @@ const Invitations = ({}: Props) => {
         setInvitations(data.payload);
       }
     };
-    accessToken && getInvitations();
+    // accessToken && getInvitations();
   }, [accessToken]);
 
   return (

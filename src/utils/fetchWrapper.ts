@@ -7,6 +7,7 @@ import { resetChat } from "../redux/auth/chat-slice";
 
 const fetchWithAuth = async (url: string, options: any = {}) => {
   let { accessToken, refreshToken } = store.getState().auth;
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   const dispatch = store.dispatch;
 
   const headers: any = {
@@ -24,7 +25,7 @@ const fetchWithAuth = async (url: string, options: any = {}) => {
     headers,
   };
 
-  let response = await fetch(url, fetchOptions);
+  let response = await fetch(baseUrl + url, fetchOptions);
 
   if (response.status === 401) {
     return await refreshAccessToken(refreshToken || "")
@@ -41,7 +42,7 @@ const fetchWithAuth = async (url: string, options: any = {}) => {
         );
 
         fetchOptions.headers.Authorization = `Bearer ${refreshResponse.accessToken}`;
-        return await fetch(url, fetchOptions);
+        return await fetch(baseUrl + url, fetchOptions);
       })
       .catch(() => {
         dispatch(resetAuth());

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SignUpInput } from "../types/signupInput";
 
 export default function SignUp() {
+  const baseUrl = import.meta.env.VITE_BACKEND_URL;
   const [formData, setFormData] = useState<SignUpInput>({
     userName: "",
     password: "",
@@ -20,7 +21,7 @@ export default function SignUp() {
     setIsLoading(true);
     try {
       const { confirmPassword, ...rest } = formData;
-      const res = await fetch("/api/signup", {
+      const res = await fetch(baseUrl + "/api/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

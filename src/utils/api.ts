@@ -5,6 +5,8 @@ import { store } from "../redux/store";
 import { signInSuccess } from "../redux/auth/auth-slice";
 import { jwtDecode } from "jwt-decode";
 
+const baseUrl = import.meta.env.VITE_BACKEND_URL;
+
 export const getCurrentUser = async () => {
   try {
     const data = await fetchWithAuth("/api/profile", {
@@ -30,8 +32,9 @@ export const getCurrentUser = async () => {
   }
 };
 export const signIn = async (formData: UserInput) => {
+  console.log({ baseUrl, env: import.meta.env });
   try {
-    const res = await fetch("/api/login", {
+    const res = await fetch(baseUrl + "/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +50,7 @@ export const signIn = async (formData: UserInput) => {
 export const refreshAccessToken = async (refreshToken: string) => {
   try {
     const dispatch = store.dispatch;
-    const res = await fetch("/api/refreshToken", {
+    const res = await fetch(baseUrl + "/api/refreshToken", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
