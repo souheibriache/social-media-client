@@ -25,7 +25,7 @@ jobs:
 
       - run: npm run build
 
-      - name: Update .env File!
+      - name: Update .env File
         run: |
           cd /home/souheib/actions-runner/_work/social-media-client/social-media-client/dist
           echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > .env
