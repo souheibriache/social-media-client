@@ -27,6 +27,6 @@ jobs:
 
       - name: Update .env File
         run: |
-          cd /home/souheib/actions-runner/_work/social-media-client/social-media-client/dist
+          cd /home/souheib/social-media-client/_work/social-media-client/social-media-client
           echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > .env
           echo "VITE_SOCKET_URL=${{ secrets.VITE_SOCKET_URL }}" >> .env
