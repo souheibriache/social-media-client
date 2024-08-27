@@ -32,25 +32,28 @@ const Invitations = ({}: Props) => {
         "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ]);
-  const [loading, setloading] = useState(true);
+  const [loading, setIsLoading] = useState(true);
   const { accessToken } = useSelector((state: any) => state.auth);
   useEffect(() => {
-    const getInvitations = async () => {
-      const res = await fetch("/api/invitations/received", {
-        method: "GET",
-        headers: {
-          "Content-Type": "json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data = await res.json();
-      console.log({ data });
-      if (data && data.payload) {
-        setloading(false);
-        setInvitations(data.payload);
-      }
-    };
-    accessToken && getInvitations();
+    // const getInvitations = async () => {
+    //   const res = await fetch("/api/invitations/received", {
+    //     method: "GET",
+    //     headers: {
+    //       "Content-Type": "json",
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   });
+    //   const data = await res.json();
+    //   console.log({ data });
+    //   if (data && data.payload) {
+    //     setloading(false);
+    //     // setInvitations(data.payload);
+    //     setInvitations(invitations);
+    //   }
+    // };
+    // accessToken && getInvitations();
+    setIsLoading(false);
+    setInvitations(invitations);
   }, [accessToken]);
 
   return (
