@@ -34,7 +34,7 @@ export const getCurrentUser = async () => {
 export const signIn = async (formData: UserInput) => {
   console.log({ baseUrl, env: import.meta.env });
   try {
-    const res = await fetch("/api/login", {
+    const res = await fetch(baseUrl + "/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

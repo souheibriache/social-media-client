@@ -8,9 +8,9 @@ const PrivateRoute = () => {
     return <Navigate to="/sign-in" />;
   }
 
-  if (accessToken && !hasProfile) {
-    return <Navigate to="/complete-signup" />;
-  }
+  // if (accessToken && !hasProfile) {
+  //   return <Navigate to="/complete-signup" />;
+  // }
 
   return <Outlet />;
 };

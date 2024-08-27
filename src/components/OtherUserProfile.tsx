@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import defaultProfilePic from "../assets/default-user.jpg";
+import defaultPicture from "../assets/default-user.jpg";
 import {
   acceptFriendRequest,
   addFriend,
@@ -21,6 +21,16 @@ type Props = {
 const OtherUserProfile = ({ user }: Props) => {
   const [otherUser, setOtherUser] = useState(user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [currentPicture, setCurrentPicture] = useState("");
+
+  useEffect(() => {
+    setCurrentPicture(
+      user.profile?.picture
+        ? `http://localhost:3000${user.profile.picture}`
+        : ""
+    );
+  }, [user]);
 
   const handleUserAction = async (action?: "Accept" | "Reject") => {
     setIsLoading(true);
@@ -160,11 +170,7 @@ const OtherUserProfile = ({ user }: Props) => {
       <div className="relative">
         <img
           className="h-32 w-32 rounded-full object-cover"
-          src={
-            otherUser?.profile?.picture
-              ? `http://localhost:3000${otherUser.profile.picture}`
-              : defaultProfilePic
-          }
+          src={currentPicture.length ? currentPicture : defaultPicture}
           alt={otherUser.userName}
         />
       </div>

@@ -10,14 +10,16 @@ type Props = {
 
 const MyProfile = ({ user }: Props) => {
   const [userInformation, setUserInformation] = useState(user);
-  const [picture, setPicture] = useState(
-    user.profile?.picture
-      ? `http://localhost:3000${user.profile.picture}`
-      : defaultPicture
-  );
+  const [currentPicture, setCurrentPicture] = useState("");
+
   useEffect(() => {
-    console.log("Picture URL:", picture);
-  }, [picture]);
+    setCurrentPicture(
+      user.profile?.picture
+        ? `http://localhost:3000${user.profile.picture}`
+        : ""
+    );
+  }, [user]);
+
   const [hasChanges, setHasChanges] = useState(false);
   const imageRef = useRef<HTMLInputElement | null>(null);
 
@@ -47,7 +49,7 @@ const MyProfile = ({ user }: Props) => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setPicture(e.target?.result as string);
+        setCurrentPicture(e.target?.result as string);
         setUserInformation((userInformation: any) => ({
           ...userInformation,
           profile: {
@@ -102,7 +104,7 @@ const MyProfile = ({ user }: Props) => {
       <div className="relative">
         <img
           className="h-32 w-32 rounded-full object-cover"
-          src={picture} // This should now reflect the updated image
+          src={currentPicture.length ? currentPicture : defaultPicture} // This should now reflect the updated image
           alt="Profile"
         />
         <label
