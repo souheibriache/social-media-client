@@ -15,9 +15,10 @@ const fetchWithAuth = async (url: string, options: any = {}) => {
     Authorization: `Bearer ${accessToken}`,
   };
 
-  // Only add Content-Type if the body is not FormData
-  if (options.body && !(options.body instanceof FormData)) {
-    headers["Content-Type"] = "multipart/form-data";
+  // Do not set Content-Type if it's FormData, the browser will handle it
+  if (!(options.body instanceof FormData)) {
+    headers["Content-Type"] =
+      options.headers["Content-Type"] || "application/json";
   }
 
   const fetchOptions = {

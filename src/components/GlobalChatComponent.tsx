@@ -10,6 +10,7 @@ type Props = {};
 
 const GlobalChatComponent = ({}: Props) => {
   const { currentUser } = useSelector((state: any) => state.user);
+  const { hasProfile } = useSelector((state: any) => state.auth);
   const { chatSessions } = useSelector((state: any) => state.chat);
   const dispatch = useDispatch();
   const socket = useSocket();
@@ -30,7 +31,7 @@ const GlobalChatComponent = ({}: Props) => {
       };
     }
   }, [socket]);
-  return currentUser ? (
+  return currentUser && hasProfile ? (
     <div className="fixed right-0 bottom-0 flex flex-row-reverse justify-start gap-1 items-end">
       <div className=" m-5 bg-slate-400 rounded-full h-14 w-14 min-h-14 min-w-14 flex items-center  justify-center ease duration-300 hover:scale-105">
         <Plus className="relative m-auto text-white h-10 w-10" />

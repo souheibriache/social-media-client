@@ -74,15 +74,10 @@ const MyProfile = ({ user }: Props) => {
     if (imageRef.current?.files?.[0]) {
       formData.append("picture", imageRef.current.files[0]);
     }
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+
     try {
       const res = await fetchWithAuth("/api/profile", {
         method: "PUT",
-        headers: {
-          // Note: You don't need to add Authorization here as fetchWithAuth handles it
-        },
         body: formData,
       });
 

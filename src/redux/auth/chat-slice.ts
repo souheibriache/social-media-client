@@ -50,12 +50,7 @@ const chatSlice = createSlice({
       );
 
       if (existingChat.length) {
-        console.log({ existingChat });
         for (const chat of state.chatSessions) {
-          console.log({
-            chatId: chat._id,
-            payloadChatId: action.payload.chat._id,
-          });
           if (chat._id === action.payload.chat._id) chat.isMinimized = false;
         }
       } else state.chatSessions.push(action.payload.chat);
@@ -63,7 +58,6 @@ const chatSlice = createSlice({
     closeChat(state: any, action: PayloadAction<any>) {
       state.loading = false;
       state.error = false;
-      console.log({ closeChatChatId: action.payload.chatId });
       state.chatSessions = state.chatSessions.filter((chat: any) => {
         chat._id === action.payload.chatId;
       });
@@ -81,7 +75,9 @@ const chatSlice = createSlice({
       state.error = false;
       for (const chat of state.chatSessions) {
         if (chat._id === action.payload.chatId)
-          chat.messages.push(action.payload.message);
+          if (chat.messages && chat.messages.length)
+            chat.messages.push(action.payload.message);
+          else chat.messages = [action.payload.message];
       }
     },
     resetChat(state: any) {

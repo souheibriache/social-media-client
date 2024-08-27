@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { jwtDecode } from "jwt-decode";
 
 export type AuthState = {
   accessToken: string | null;
@@ -34,13 +33,7 @@ const authSlice = createSlice({
     ) {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-
-      // Decode the accessToken to extract hasProfile
-      const decodedToken: { hasProfile: boolean } = jwtDecode(
-        action.payload.accessToken
-      );
-      state.hasProfile = decodedToken.hasProfile;
-
+      state.hasProfile = action.payload.hasProfile;
       state.loading = false;
       state.error = false;
     },

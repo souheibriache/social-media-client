@@ -16,7 +16,9 @@ import { jwtDecode } from "jwt-decode";
 import GlobalChatComponent from "./components/GlobalChatComponent";
 
 const App = () => {
-  const { accessToken } = useSelector((state: any) => state.auth);
+  const { accessToken, refreshToken, hasProfile } = useSelector(
+    (state: any) => state.auth
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -30,8 +32,7 @@ const App = () => {
         } else if (userData?.payload) {
           dispatch(fetchUserSuccess(userData.payload));
           // navigate("/"); // Redirect to home if profile exists
-          const decodedToken: { hasProfile: boolean } = jwtDecode(accessToken);
-          if (!decodedToken.hasProfile) navigate("/complete-signup");
+          if (!hasProfile) navigate("/complete-signup");
         } else {
           console.error("Unexpected response data", userData);
         }

@@ -24,7 +24,6 @@ export const getCurrentUser = async () => {
     }
 
     const jsonData = await data;
-    console.log("User data received:", jsonData);
     return jsonData;
   } catch (err) {
     console.error("Error in getCurrentUser:", err);
@@ -32,7 +31,6 @@ export const getCurrentUser = async () => {
   }
 };
 export const signIn = async (formData: UserInput) => {
-  console.log({ baseUrl, env: import.meta.env });
   try {
     const res = await fetch(baseUrl + "/api/login", {
       method: "POST",
@@ -193,13 +191,11 @@ export const getChatByRecipientId = async (recipientId: string) => {
     toast.error("Error fetching user chat");
   }
 };
-
-export const completeSignup = async (formData: any) => {
+export const completeSignup = async (formData: FormData) => {
   try {
-    // Use fetchWithAuth for the API request
     const data = await fetchWithAuth("/api/profile", {
       method: "POST",
-      body: JSON.stringify(formData),
+      body: formData,
     });
 
     return data;
