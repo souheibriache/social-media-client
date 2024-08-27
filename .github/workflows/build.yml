@@ -23,10 +23,11 @@ jobs:
 
       - run: npm install
 
-      - run: npm run build
-
+      
       - name: Update .env File
         run: |
-          cd /home/souheib/social-media-client/_work/social-media-client/social-media-client
-          echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > .env
-          echo "VITE_SOCKET_URL=${{ secrets.VITE_SOCKET_URL }}" >> .env
+          touch .env
+          echo "${{ secrets.DEV_ENV }}" > .env
+
+      - run: npm run build
+
