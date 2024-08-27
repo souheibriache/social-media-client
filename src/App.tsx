@@ -12,13 +12,10 @@ import { getCurrentUser } from "./utils/api";
 import CompleteSignUp from "./pages/CompleteSignUp";
 import PrivateRoute from "./components/PrivateRoute";
 import AuthRoute from "./components/AuthRoute";
-import { jwtDecode } from "jwt-decode";
 import GlobalChatComponent from "./components/GlobalChatComponent";
 
 const App = () => {
-  const { accessToken, refreshToken, hasProfile } = useSelector(
-    (state: any) => state.auth
-  );
+  const { accessToken, hasProfile } = useSelector((state: any) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
