@@ -11,12 +11,11 @@ type Props = {
 const MyProfile = ({ user }: Props) => {
   const [userInformation, setUserInformation] = useState(user);
   const [currentPicture, setCurrentPicture] = useState("");
+  const { VITE_BACKEND_URL } = import.meta.env;
 
   useEffect(() => {
     setCurrentPicture(
-      user.profile?.picture
-        ? `http://localhost:3000${user.profile.picture}`
-        : ""
+      user.profile?.picture ? `${VITE_BACKEND_URL}${user.profile.picture}` : ""
     );
   }, [user]);
 

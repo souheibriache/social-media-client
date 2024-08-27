@@ -21,14 +21,13 @@ type Props = {
 const OtherUserProfile = ({ user }: Props) => {
   const [otherUser, setOtherUser] = useState(user);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { VITE_BACKEND_URL } = import.meta.env;
 
   const [currentPicture, setCurrentPicture] = useState("");
 
   useEffect(() => {
     setCurrentPicture(
-      user.profile?.picture
-        ? `http://localhost:3000${user.profile.picture}`
-        : ""
+      user.profile?.picture ? `${VITE_BACKEND_URL}${user.profile.picture}` : ""
     );
   }, [user]);
 

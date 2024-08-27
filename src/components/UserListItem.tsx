@@ -51,6 +51,7 @@ const AddButtonAction = ({ invitationStatus }: any) => {
 const UserListItem = ({ key, user }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [itemListUser, setItemListUser] = useState(user);
+  const { VITE_BACKEND_URL } = import.meta.env;
 
   const invitationStatusText = () => {
     switch (itemListUser.invitationStatus) {
@@ -108,7 +109,7 @@ const UserListItem = ({ key, user }: Props) => {
         <img
           src={
             itemListUser?.profile?.picture
-              ? `http://localhost:3000${itemListUser.profile.picture}`
+              ? `${VITE_BACKEND_URL}${itemListUser.profile.picture}`
               : defaultProfilePic
           }
           alt={itemListUser.userName}

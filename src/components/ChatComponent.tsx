@@ -19,6 +19,7 @@ const ChatComponent = ({ chat }: Props) => {
   const dispatch = useDispatch();
   const [messageContent, setMessageContent] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { VITE_BACKEND_URL } = import.meta.env;
 
   const { currentUser } = useSelector((state: any) => state.user);
   const socket = useSocket();
@@ -80,7 +81,7 @@ const ChatComponent = ({ chat }: Props) => {
             className="h-6 w-6 rounded-full"
             src={
               chat?.recipient?.profile?.picture
-                ? `http://localhost:3000${chat?.recipient?.profile?.picture}`
+                ? `${VITE_BACKEND_URL}${chat?.recipient?.profile?.picture}`
                 : defaultImage
             }
             alt={chat?.recipient?.userName}
@@ -138,7 +139,7 @@ const ChatComponent = ({ chat }: Props) => {
                         className="h-6 w-6 rounded-full object-cover"
                         src={
                           message.sender?.profile?.picture
-                            ? `http://localhost:3000${message.sender?.profile?.picture}`
+                            ? `${VITE_BACKEND_URL}${message.sender?.profile?.picture}`
                             : defaultImage
                         }
                         alt={message.sender?.userName}

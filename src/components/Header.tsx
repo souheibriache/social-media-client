@@ -7,6 +7,7 @@ import { resetAuth } from "../redux/auth/auth-slice";
 import { resetChat } from "../redux/auth/chat-slice";
 
 const Header = () => {
+  const { VITE_BACKEND_URL } = import.meta.env;
   const { currentUser } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const [isHeaderMenuVisible, setisHeaderMenuVisible] =
@@ -48,7 +49,7 @@ const Header = () => {
                 className="rounded-full min-w-10 max-w-10 h-10 object-cover"
                 src={
                   currentUser.picture
-                    ? `http://localhost:3000${currentUser.picture}`
+                    ? `${VITE_BACKEND_URL}${currentUser.picture}`
                     : defaultPicture
                 }
                 alt="profile picture"
