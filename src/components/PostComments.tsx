@@ -8,7 +8,7 @@ type PostCommentsProps = {
   addComment: (comment: any) => void;
 };
 
-const PostComments = ({ postId, comments, addComment }: PostCommentsProps) => {
+const PostComments = ({ postId, addComment }: PostCommentsProps) => {
   const [commentValue, setCommentValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
 

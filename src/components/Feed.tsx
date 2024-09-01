@@ -13,7 +13,7 @@ import { toast } from "sonner";
 type Props = {};
 
 const Feed = ({}: Props) => {
-  const { isLoading, error, posts } = useSelector((state: any) => state.feed);
+  const { isLoading, posts } = useSelector((state: any) => state.feed);
   const dispatch = useDispatch();
 
   useEffect(() => {

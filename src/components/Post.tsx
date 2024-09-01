@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type Props = {};
 
-const Post = (props: Props) => {
+const Post = ({}: Props) => {
   const { VITE_BACKEND_URL } = import.meta.env;
   const { currentUser } = useSelector((state: any) => state.user);
   const [createPostVisible, setCreatePostVisible] = useState(false);

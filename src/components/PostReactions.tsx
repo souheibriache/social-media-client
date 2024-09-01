@@ -47,30 +47,30 @@ const PostReactions = ({
     setShowReactions(false);
   };
 
-  const reactionIcons = () => {
-    if (!reactions.length) return null;
+  //   const reactionIcons = () => {
+  //     if (!reactions.length) return null;
 
-    const reactionCounts = reactions.reduce(
-      (acc: Record<string, number>, reaction: any) => {
-        acc[reaction.type] = (acc[reaction.type] || 0) + 1;
-        return acc;
-      },
-      {}
-    );
+  //     const reactionCounts = reactions.reduce(
+  //       (acc: Record<string, number>, reaction: any) => {
+  //         acc[reaction.type] = (acc[reaction.type] || 0) + 1;
+  //         return acc;
+  //       },
+  //       {}
+  //     );
 
-    const sortedReactions = Object.keys(reactionCounts)
-      .sort((a, b) => reactionCounts[b] - reactionCounts[a])
-      .slice(0, 2);
+  //     const sortedReactions = Object.keys(reactionCounts)
+  //       .sort((a, b) => reactionCounts[b] - reactionCounts[a])
+  //       .slice(0, 2);
 
-    return sortedReactions.map((reactionType, index) => {
-      const { component } = getReactionIcon(reactionType);
-      return (
-        <div key={index} className={`${index === 1 ? "-translate-x-2" : ""}`}>
-          {component}
-        </div>
-      );
-    });
-  };
+  //     return sortedReactions.map((reactionType, index) => {
+  //       const { component } = getReactionIcon(reactionType);
+  //       return (
+  //         <div key={index} className={`${index === 1 ? "-translate-x-2" : ""}`}>
+  //           {component}
+  //         </div>
+  //       );
+  //     });
+  //   };
 
   return (
     <div className="relative flex flex-row justify-between w-full">
