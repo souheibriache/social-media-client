@@ -19,18 +19,6 @@ const Invitations = ({}: Props) => {
       picture:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
-    {
-      _id: "3",
-      userName: "User 3",
-      picture:
-        "https://images.unsplash.com/photo-1640951613773-54706e06851d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHVzZXJ8ZW58MHx8MHx8fDA%3D",
-    },
-    {
-      _id: "4",
-      userName: "User 4",
-      picture:
-        "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
   ]);
   const [loading, setIsLoading] = useState(true);
   const { accessToken } = useSelector((state: any) => state.auth);
@@ -57,12 +45,12 @@ const Invitations = ({}: Props) => {
   }, [accessToken]);
 
   return (
-    <div className="flex flex-col items-start w-full p-2">
+    <div className="flex flex-col items-start w-full p-2 h-full container">
       <h2 className="font-semibold text-lg">Invitations</h2>
       {loading ? (
         <Loader className="self-center" />
       ) : (
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full max-h-96 overflow-visible">
           {invitations.map((invitation, index) => (
             <UserProfile
               key={index}

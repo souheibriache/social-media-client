@@ -27,10 +27,10 @@ const Search = ({}: Props) => {
     });
   };
   return (
-    <div className="mt-3 relative rounded-2xl shadow-md ">
+    <div className="mt-3 relative rounded-md shadow-md ">
       <form onSubmit={handleUsersSearch}>
         <div
-          className={`flex flex-row w-96 bg-white justify-between h-10 items-center px-3 rounded-2xl ${
+          className={`flex flex-row w-96 bg-white justify-between h-10 items-center px-3 rounded-md ${
             usersList.length || isLoading
               ? "rounded-b-none border-b-slate-400 border-b-2"
               : ""

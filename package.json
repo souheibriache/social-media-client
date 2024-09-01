@@ -17,6 +17,7 @@
     "@types/node": "^22.5.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "javascript-time-ago": "^2.5.10",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.424.0",
     "next-themes": "^0.3.0",
@@ -28,7 +29,8 @@
     "socket.io-client": "^4.7.5",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "timeago": "^1.6.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

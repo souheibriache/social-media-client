@@ -28,7 +28,6 @@ const App = () => {
           navigate("/complete-signup"); // Redirect if profile is not found
         } else if (userData?.payload) {
           dispatch(fetchUserSuccess(userData.payload));
-          // navigate("/"); // Redirect to home if profile exists
           if (!hasProfile) navigate("/complete-signup");
         } else {
           console.error("Unexpected response data", userData);
@@ -43,24 +42,24 @@ const App = () => {
   }, [accessToken]);
 
   return (
-    <>
+    <div className="h-full flex flex-col pt-14">
       <Header />
-      <GlobalChatComponent />
-      <Routes>
-        <Route path="/about" element={<About />} />
-        <Route element={<AuthRoute />}>
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-        </Route>
-        <Route element={<PrivateRoute />}>
-          <Route path="/profile/:userId" element={<Profile />} />
-          <Route path="/" element={<Home />} />
-        </Route>
-        {/* <Route element={<PrivateRoute />}> */}
-        <Route path="/complete-signup" element={<CompleteSignUp />} />
-        {/* </Route> */}
-      </Routes>
-    </>
+      <div className="flex-1">
+        <GlobalChatComponent />
+        <Routes>
+          <Route path="/about" element={<About />} />
+          <Route element={<AuthRoute />}>
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+          </Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile/:userId" element={<Profile />} />
+            <Route path="/" element={<Home />} />
+          </Route>
+          <Route path="/complete-signup" element={<CompleteSignUp />} />
+        </Routes>
+      </div>
+    </div>
   );
 };
 

@@ -26,7 +26,7 @@ const Profile = () => {
     userId && getUserProfile();
   }, [userId]);
   return (
-    <div className="container flex flex-col justify-center w-full items-center">
+    <div className="container flex flex-col justify-center w-full items-center mt-5">
       {isLoading ? (
         <Loader />
       ) : userId === currentUser.userId ? (

@@ -4,6 +4,7 @@ import { UserInput } from "../types/loginInput";
 import { store } from "../redux/store";
 import { signInSuccess } from "../redux/auth/auth-slice";
 import { jwtDecode } from "jwt-decode";
+import { ReactionTypes } from "../types/reaction.type.enum";
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -202,5 +203,84 @@ export const completeSignup = async (formData: FormData) => {
   } catch (error) {
     console.error("Error in completeSignup:", error);
     throw error;
+  }
+};
+
+export const createPost = async (formData: FormData) => {
+  try {
+    const data = await fetchWithAuth("/api/posts", {
+      method: "POST",
+      body: formData,
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Error in completeSignup:", error);
+    throw error;
+  }
+};
+
+export const getFeed = async (page: number) => {
+  const query = `/api/feed?page=${page}`;
+  try {
+    const res = await fetchWithAuth(query, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error) {
+    console.log("Fetching feed posts failed: " + error);
+    toast.error("Error fetching feed posts");
+  }
+};
+
+export const react = async (postId: string, type: ReactionTypes) => {
+  const query = `/api/posts/${postId}/reactions`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "POST",
+      body: JSON.stringify({ type }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Reaction failed: " + error);
+    toast.error(error.message);
+  }
+};
+
+export const postComment = async (postId: string, content: string) => {
+  const query = `/api/posts/${postId}/comments`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "POST",
+      body: JSON.stringify({ content }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Posting comment failed: " + error);
+    toast.error(error.message);
+  }
+};
+
+export const removeReaction = async (postId: string) => {
+  const query = `/api/posts/${postId}/reactions`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Fetching feed posts failed: " + error);
+    toast.error(error.message);
   }
 };
