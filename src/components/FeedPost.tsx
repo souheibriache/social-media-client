@@ -94,7 +94,7 @@ const FeedPost = ({
           deleteReaction({
             postId: post._id,
             reactionId: currentReaction?._id,
-            userId: currentUser.userId,
+            userId: currentUser?.userId,
           })
         );
         setCurrentReaction(null);
@@ -116,7 +116,7 @@ const FeedPost = ({
         addReaction({
           postId: post._id,
           reaction: response.payload,
-          userId: currentUser.userId,
+          userId: currentUser?.userId,
         })
       );
       setCurrentReaction(null);

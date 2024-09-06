@@ -84,7 +84,7 @@ const feedSlice = createSlice({
       for (const post of state.posts) {
         if (post._id === action.payload.postId) {
           post.reactions = post.reactions.filter(
-            (reaction) => reaction?.user?._id !== action.payload.userId
+            (reaction) => reaction?.user?._id !== action.payload?.userId
           );
           post.reactions.push(action.payload.reaction);
         }
@@ -94,7 +94,7 @@ const feedSlice = createSlice({
       for (const post of state.posts) {
         if (post._id === action.payload.postId) {
           post.reactions = post.reactions.filter(
-            (reaction) => reaction.user._id !== action.payload.userId
+            (reaction) => reaction.user._id !== action.payload?.userId
           );
         }
       }

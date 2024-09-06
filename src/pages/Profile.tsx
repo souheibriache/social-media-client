@@ -29,7 +29,7 @@ const Profile = () => {
     <div className="container flex flex-col justify-center w-full items-center mt-5">
       {isLoading ? (
         <Loader />
-      ) : userId === currentUser.userId ? (
+      ) : userId === currentUser?.userId ? (
         <MyProfile user={userProfile} />
       ) : (
         <OtherUserProfile user={userProfile} />

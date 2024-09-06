@@ -61,7 +61,7 @@ const Header = () => {
               >
                 <ul>
                   <li className="px-6 ease-in py-2 rounded-md text-md font-semibold hover:bg-slate-200">
-                    <Link to={`/profile/${currentUser.userId}`}> Profile</Link>
+                    <Link to={`/profile/${currentUser?.userId}`}> Profile</Link>
                   </li>
                   <li className="px-6 ease-in py-2 rounded-md text-md font-semibold hover:bg-slate-200">
                     Invitations

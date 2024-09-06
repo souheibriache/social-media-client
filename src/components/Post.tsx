@@ -12,7 +12,7 @@ const Post = ({}: Props) => {
   const [createPostVisible, setCreatePostVisible] = useState(false);
   return (
     <div className="px-3 flex bg-white flex-row h-16 w-96 mt-2 items-center rounded-md shadow-md">
-      <Link to={`/profile/${currentUser.userId}`}>
+      <Link to={`/profile/${currentUser?.userId}`}>
         <img
           className="h-12 max-w-12 min-w-12 object-cover rounded-full"
           src={

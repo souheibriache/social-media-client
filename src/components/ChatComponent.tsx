@@ -113,7 +113,7 @@ const ChatComponent = ({ chat }: Props) => {
               </p>
             ) : (
               chat.messages.map((message: MessageType, index: number) => {
-                const isSender = message.sender._id === currentUser.userId;
+                const isSender = message.sender._id === currentUser?.userId;
                 const messageTimestamp = new Date(message.timestamp);
                 const today = new Date();
                 const isToday =
