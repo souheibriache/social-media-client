@@ -33,7 +33,6 @@ const CommentsComponent = ({
         top: commentsEndRef.current.scrollHeight,
         behavior: "smooth",
       });
-      // commentsEndRef.current.scrollTop = commentsEndRef.current.scrollHeight;
     }
   }, [postComments]);
 
