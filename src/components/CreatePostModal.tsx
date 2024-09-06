@@ -66,8 +66,8 @@ const CreatePostModal = ({ setCreatePostVisible }: Props) => {
     }
   };
   return (
-    <div className="screen w-screen h-screen flex flex-row items-center justify-center absolute left-0 top-0">
-      <div className="h-full w-full absolute opacity-50 left-0 top-0 bg-slate-100"></div>
+    <div className="screen w-screen h-screen flex flex-row items-center justify-center fixed left-0 top-0 z-40">
+      <div className="h-full w-full fixed opacity-50 left-0 top-0 bg-slate-100"></div>
       <div className="modal h-auto w-96 mx-auto bg-white rounded-md shadow-md z-10 flex flex-col items-center ">
         <div className="relative flex flex-col pt-2 items-center h-12 w-full justify-self-center">
           <h1 className="font-bold text-lg">Create a new post</h1>

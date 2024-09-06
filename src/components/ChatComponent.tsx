@@ -47,7 +47,10 @@ const ChatComponent = ({ chat }: Props) => {
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+      messagesEndRef.current.scrollTo({
+        top: messagesEndRef.current.scrollHeight,
+        behavior: "smooth",
+      });
     }
   }, [chat]);
 

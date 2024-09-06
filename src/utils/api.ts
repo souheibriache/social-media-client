@@ -284,3 +284,34 @@ export const removeReaction = async (postId: string) => {
     toast.error(error.message);
   }
 };
+
+export const fetchPostReactions = async (postId: string) => {
+  const query = `/api/posts/${postId}/reactions`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Getting post reactions failed " + error);
+    toast.error(error.message);
+  }
+};
+export const fetchPostComments = async (postId: string) => {
+  const query = `/api/posts/${postId}/comments`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Fetching comment failed: " + error);
+    toast.error(error.message);
+  }
+};

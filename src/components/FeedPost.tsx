@@ -8,43 +8,54 @@ import {
   ThumbsDown,
   Laugh,
   Angry,
-  SendHorizonal,
-  Loader,
 } from "lucide-react";
 import defaultProfilePic from "../assets/default-user.jpg";
 import { useState, useRef, useEffect } from "react";
-import TimeAgo from "javascript-time-ago";
-import en from "javascript-time-ago/locale/en";
-import { postComment, react, removeReaction } from "../utils/api";
+import { react, removeReaction } from "../utils/api";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addComment,
-  addReaction,
-  deleteReaction,
-} from "../redux/auth/feed-slice";
-import { toast } from "sonner";
-
-TimeAgo.addDefaultLocale(en);
+import { addReaction, deleteReaction } from "../redux/auth/feed-slice";
+import { getReactionIcon, reactionsIcons } from "./post/postReactions";
+import { timeAgo } from "../utils/timeago";
+import PostComment from "./post/PostComment";
+import { Link } from "react-router-dom";
 
 type Props = {
   post: any;
+  setCurrentCommentsPostId: (post: string) => void;
+  setCommentsVisible: (visibility: boolean) => void;
 };
 
-const FeedPost = ({ post }: Props) => {
+const FeedPost = ({
+  post,
+  setCurrentCommentsPostId,
+  setCommentsVisible,
+}: Props) => {
   const { VITE_BACKEND_URL } = import.meta.env;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showReactions, setShowReactions] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const likeButtonRef = useRef<HTMLButtonElement>(null);
   const reactionBarRef = useRef<HTMLDivElement>(null);
-  const [commentValue, setCommentValue] = useState<string>("");
+
   const [currentReaction, setCurrentReaction] = useState<any>(null);
   const { currentUser } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const [currentReactionIcon, setCurrentReactionIcon] = useState<any>(null);
-  const [postCommentLoading, setPostCommentLoading] = useState(false);
 
   let hoverTimeout: NodeJS.Timeout;
+
+  const [postReactionIcons, setpostReactionIcons] = useState<any>(null);
+
+  useEffect(() => {
+    if (post.reactions.length)
+      setpostReactionIcons(
+        <>
+          {reactionsIcons(post.reactions)}
+          <p>{post.reactions.length} Reactions</p>
+        </>
+      );
+    else setpostReactionIcons(<></>);
+  }, [post.reactions]);
 
   const scrollToIndex = (index: number) => {
     if (imageContainerRef.current) {
@@ -114,21 +125,6 @@ const FeedPost = ({ post }: Props) => {
     handleMouseLeave();
   };
 
-  const handleCommentSubmit = async (e: any) => {
-    e.preventDefault();
-    setPostCommentLoading(true);
-    await postComment(post._id, commentValue)
-      .then((response) => {
-        dispatch(addComment({ postId: post._id, comment: response.payload }));
-        setCommentValue("");
-        setPostCommentLoading(false);
-      })
-      .catch((error) => {
-        toast.error(error.message);
-        setPostCommentLoading(false);
-      });
-  };
-
   useEffect(() => {
     if (post && post.reactions.length) {
       const reaction = post.reactions.find(
@@ -137,40 +133,6 @@ const FeedPost = ({ post }: Props) => {
       if (reaction) setCurrentReaction(reaction);
     }
   }, [post, post.reactions]);
-
-  const reactionsIcons = () => {
-    if (!post?.reactions?.length) return null;
-
-    // Calculate occurrences of each reaction type
-    const reactionCounts = post.reactions.reduce(
-      (acc: Record<string, number>, reaction: any) => {
-        acc[reaction.type] = (acc[reaction.type] || 0) + 1;
-        return acc;
-      },
-      {}
-    );
-
-    // Sort reaction types by their frequency in descending order
-    const sortedReactions = Object.keys(reactionCounts)
-      .sort((a, b) => reactionCounts[b] - reactionCounts[a])
-      .slice(0, 2); // Take the top two reactions
-
-    return (
-      <>
-        {sortedReactions.map((reactionType, index) => {
-          const { component } = getReactionIcon(reactionType);
-          return (
-            <div
-              key={index}
-              className={`${index === 1 ? "-translate-x-2" : ""}`}
-            >
-              {component}
-            </div>
-          );
-        })}
-      </>
-    );
-  };
 
   useEffect(() => {
     console.log({ currentReaction });
@@ -186,24 +148,26 @@ const FeedPost = ({ post }: Props) => {
     }
   }, [currentReaction]);
 
-  const timeAgo = new TimeAgo("en-US");
-
   return (
-    <div className="bg-white rounded-md shadow-md w-full h-fit flex flex-col py-3 gap-2 overflow-hidden">
+    <div className="relative bg-white rounded-md shadow-md w-full h-fit flex flex-col py-3 gap-2 overflow-hidden">
       <div className="flex flex-row w-full px-3">
-        <img
-          className="h-12 w-12 rounded-full object-cover"
-          src={
-            post?.user?.profile?.picture
-              ? VITE_BACKEND_URL + post.user.profile.picture
-              : defaultProfilePic
-          }
-          alt=""
-        />
+        <Link to={`/profile/${post?.user._id}`}>
+          <img
+            className="h-12 max-w-12 min-w-12 rounded-full object-cover"
+            src={
+              post?.user?.profile?.picture
+                ? VITE_BACKEND_URL + post.user.profile.picture
+                : defaultProfilePic
+            }
+            alt=""
+          />
+        </Link>
         <div className="flex flex-col justify-between ml-2 w-full">
-          <p className="text-slate-800 font-semibold text-lg">
-            {post?.user.userName}
-          </p>
+          <Link to={`/profile/${post?.user._id}`}>
+            <p className="text-slate-800 font-semibold text-lg">
+              {post?.user.userName}
+            </p>
+          </Link>
           <p className="text-slate-500 text-sm">
             {timeAgo.format(new Date(post?.createdAt))}
           </p>
@@ -259,12 +223,8 @@ const FeedPost = ({ post }: Props) => {
           ))}
         </div>
       </div>
-      <div className="flex flex-row w-full gap-5 px-3">
-        {post?.reactions?.length ? (
-          <p className="flex flex-row items-center gap-1">
-            {reactionsIcons()} {post.reactions.length} reactions
-          </p>
-        ) : null}
+      <div className="flex flex-row w-full gap-1 px-3">
+        {postReactionIcons}
         {post?.comments?.length ? <p>{post.comments.length} comments</p> : null}
       </div>
       <div className="flex flex-col gap-1">
@@ -331,7 +291,13 @@ const FeedPost = ({ post }: Props) => {
             </button>
           </div>
 
-          <button className="flex flex-row w-full items-center text-sm justify-center gap-1 hover:scale-110 ease duration-100 font-semibold text-slate-700">
+          <button
+            onClick={() => {
+              setCommentsVisible(true);
+              setCurrentCommentsPostId(post._id);
+            }}
+            className="flex flex-row w-full items-center text-sm justify-center gap-1 hover:scale-110 ease duration-100 font-semibold text-slate-700"
+          >
             Comment
             <MessageCircle className="p-1" />
           </button>
@@ -340,89 +306,10 @@ const FeedPost = ({ post }: Props) => {
 
       <div className="flex flex-col gap-1">
         <hr className="w-full border-slate-300" />
-        <form
-          onSubmit={handleCommentSubmit}
-          className="flex flex-row w-full px-3 h-8 mt-1 items-center"
-        >
-          <input
-            type="text"
-            value={commentValue}
-            onChange={(e: any) => setCommentValue(e.target.value)}
-            placeholder="Write a comment!"
-            className="border-none outline-none w-full bg-slate-200 h-full px-3 rounded-full text-slate-800"
-          />
-          <button
-            type="submit"
-            disabled={postCommentLoading || commentValue.trim().length < 1}
-            className="text-slate-600 ml-1 disabled:text-slate-300"
-          >
-            {postCommentLoading ? (
-              <Loader className="animate-spin" />
-            ) : (
-              <SendHorizonal />
-            )}
-          </button>
-        </form>
+        <PostComment postId={post._id} />
       </div>
     </div>
   );
 };
 
 export default FeedPost;
-
-const getReactionIcon = (
-  reactionType: string
-): { color: string; text: string; component: any } => {
-  switch (reactionType) {
-    case "like":
-      return {
-        color: "text-blue-600",
-        component: (
-          <ThumbsUp className=" p-1.5 text-white bg-blue-600 rounded-full" />
-        ),
-        text: "Like",
-      };
-
-    case "love":
-      return {
-        color: "text-red-600",
-        component: (
-          <Heart className=" p-1.5 text-white bg-red-600 rounded-full" />
-        ),
-        text: "Love",
-      };
-
-    case "haha":
-      return {
-        color: "text-yellow-600",
-        component: (
-          <Laugh className=" p-1.5 text-white bg-yellow-600 rounded-full" />
-        ),
-        text: "Haha",
-      };
-    case "angry":
-      return {
-        color: "text-orange-600",
-        component: (
-          <Angry className="p-1.5 text-white bg-orange-600 rounded-full" />
-        ),
-        text: "Grrr",
-      };
-    case "unlike":
-      return {
-        color: "text-gray-600",
-        component: (
-          <ThumbsDown className=" p-1.5 text-white bg-gray-600 rounded-full" />
-        ),
-        text: "Unlike",
-      };
-    default:
-      return {
-        color: "text-blue-600",
-        component: (
-          <ThumbsUp className=" p-1.5 text-white bg-blue-600 rounded-full" />
-        ),
-        text: "Like",
-      };
-  }
-};
