@@ -315,3 +315,35 @@ export const fetchPostComments = async (postId: string) => {
     toast.error(error.message);
   }
 };
+
+export const fetchInvitations = async () => {
+  const query = `/api/invitations/received`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Fetching invitations failed: " + error);
+    toast.error(error.message);
+  }
+};
+
+export const fetchFriends = async () => {
+  const query = `/api/invitations/friends`;
+  try {
+    const res = await fetchWithAuth(query, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error: any) {
+    console.log("Fetching invitations failed: " + error);
+    toast.error(error.message);
+  }
+};

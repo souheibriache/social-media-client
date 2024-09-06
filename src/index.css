@@ -70,5 +70,6 @@
 }
 
 #root{
-  height: 95vh;
+  height: 98vh;
+  max-height: 98vh;
 }

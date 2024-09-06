@@ -1,19 +1,21 @@
 import { Loader } from "lucide-react";
 import { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
-import { fetchInvitations } from "../utils/api";
+import { fetchFriends } from "../utils/api";
 import { toast } from "sonner";
 
 type Props = {};
 
-const Invitations = ({}: Props) => {
-  const [invitations, setInvitations] = useState([]);
+const Friends = ({}: Props) => {
+  const [friends, setFriends] = useState([]);
   const [loading, setIsLoading] = useState(true);
   useEffect(() => {
-    const getInvitations = async () => {
-      await fetchInvitations()
+    const getFriends = async () => {
+      await fetchFriends()
         .then((response) => {
-          setInvitations(response.payload.invitations);
+          console.log({ response: response.payload });
+          setFriends(response.payload);
+
           setIsLoading(false);
         })
         .catch((error) => {
@@ -21,31 +23,32 @@ const Invitations = ({}: Props) => {
           setIsLoading(false);
         });
     };
-    getInvitations();
+    getFriends();
   }, []);
 
   return (
     <div className="flex flex-col items-start w-full p-2 h-fit container">
-      <h2 className="font-semibold text-lg">Invitations</h2>
+      <h2 className="font-semibold text-lg">Friends</h2>
       {loading ? (
         <Loader className="self-center" />
       ) : (
         <div className="flex flex-col gap-2 w-full max-h-96 overflow-visible">
-          {invitations.length ? (
-            invitations?.map((invitation: any, index: number) => (
+          {friends.length ? (
+            friends?.map((friend: any, index: number) => (
               <UserProfile
                 key={index}
-                _id={invitation.sender._id}
-                userName={invitation.sender.userName}
-                picture={invitation.sender.profile.picture}
+                _id={friend._id}
+                userName={friend.userName}
+                picture={friend.profile.picture}
+                friend={true}
               />
             ))
           ) : (
-            <p>You have no invitations</p>
+            <p>You have no friends</p>
           )}
         </div>
       )}
     </div>
   );
 };
-export default Invitations;
+export default Friends;

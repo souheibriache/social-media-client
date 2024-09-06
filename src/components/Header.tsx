@@ -19,7 +19,7 @@ const Header = () => {
     dispatch(resetChat());
   };
   return (
-    <div className="bg-slate-200 fixed w-full top-0 z-10 ">
+    <div className="bg-slate-200 fixed w-full top-0 z-30 ">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to={"/"}>
           <h1 className="font-bold">Social-app</h1>

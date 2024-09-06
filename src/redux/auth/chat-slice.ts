@@ -53,14 +53,21 @@ const chatSlice = createSlice({
         for (const chat of state.chatSessions) {
           if (chat._id === action.payload.chat._id) chat.isMinimized = false;
         }
-      } else state.chatSessions.push(action.payload.chat);
+      } else {
+        state.chatSessions.push(action.payload.chat);
+        if (state.chatSessions.length === 3) state.chatSessions.shift();
+      }
     },
     closeChat(state: any, action: PayloadAction<any>) {
       state.loading = false;
       state.error = false;
-      state.chatSessions = state.chatSessions.filter((chat: any) => {
-        chat._id === action.payload.chatId;
+      console.log({
+        chatSessions: state.chatSessions[0]._id,
+        chatId: action.payload.chatId,
       });
+      state.chatSessions = state.chatSessions.filter(
+        (chat: any) => chat._id !== action.payload.chatId
+      );
     },
     toggleChatVisibility(state: any, action: PayloadAction<any>) {
       state.loading = false;

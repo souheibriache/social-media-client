@@ -77,12 +77,12 @@ const CommentsComponent = ({
           setCommentsLoading(true);
           setCommentsVisible(false);
         }}
-        className={`fixed w-screen h-screen z-10 bg-white opacity-50 top-0 left-0 ${
+        className={`fixed w-screen h-screen z-40 bg-white opacity-50 top-0 left-0 ${
           visible ? "" : "hidden"
         }`}
       ></div>
       <div
-        className={`fixed w-96 h-96 bg-white z-20 top-32 ${
+        className={`fixed w-96 h-96 bg-white z-40 top-32 ${
           visible ? "flex" : "translate-y-96 hidden opacity-0"
         } duration-150 ease-in-out shadow-md rounded-md flex-col items-center p-3 gap-2`}
       >

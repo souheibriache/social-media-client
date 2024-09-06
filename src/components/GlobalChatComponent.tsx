@@ -32,8 +32,8 @@ const GlobalChatComponent = ({}: Props) => {
     }
   }, [socket]);
   return currentUser && hasProfile ? (
-    <div className="fixed right-0 bottom-0 flex flex-row-reverse justify-start gap-1 items-end">
-      <div className=" m-5 bg-slate-400 rounded-full h-14 w-14 min-h-14 min-w-14 flex items-center  justify-center ease duration-300 hover:scale-105">
+    <div className="z-20 fixed right-0 bottom-0 flex flex-row-reverse justify-start gap-1 items-end">
+      <div className="  m-5 bg-slate-400 rounded-full h-14 w-14 min-h-14 min-w-14 flex items-center  justify-center ease duration-300 hover:scale-105">
         <Plus className="relative m-auto text-white h-10 w-10" />
       </div>
       {chatSessions.map((chat: ChatType, index: number) => (

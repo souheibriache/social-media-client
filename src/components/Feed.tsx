@@ -37,7 +37,7 @@ const Feed = ({}: Props) => {
     getUserFeed();
   }, []);
   return (
-    <div className="relative w-96 flex flex-col gap-2 mt-2 items-center">
+    <div className="relative w-96 flex flex-col gap-2 mt-2 items-center h-full">
       <CommentsComponent
         postId={currentCommentsPostId}
         visible={commentsVisible}

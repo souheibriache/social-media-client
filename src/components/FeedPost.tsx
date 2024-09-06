@@ -135,7 +135,6 @@ const FeedPost = ({
   }, [post, post.reactions]);
 
   useEffect(() => {
-    console.log({ currentReaction });
     if (currentReaction) {
       const { text, color, component } = getReactionIcon(currentReaction?.type);
       setCurrentReactionIcon(
@@ -223,7 +222,13 @@ const FeedPost = ({
           ))}
         </div>
       </div>
-      <div className="flex flex-row w-full gap-1 px-3">
+      <div
+        onClick={() => {
+          setCommentsVisible(true);
+          setCurrentCommentsPostId(post._id);
+        }}
+        className="flex flex-row w-full gap-1 px-3 cursor-pointer"
+      >
         {postReactionIcons}
         {post?.comments?.length ? <p>{post.comments.length} comments</p> : null}
       </div>

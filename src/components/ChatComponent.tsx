@@ -74,14 +74,14 @@ const ChatComponent = ({ chat }: Props) => {
   }, [socket]);
 
   return (
-    <div className="w-full flex flex-col bg-slate-500 min-w-64 max-w-64 max-h-80 rounded-t-md border-slate-600 border-2 relative">
+    <div className="w-full flex flex-col bg-slate-500 min-w-80 max-w-64 max-h-80 rounded-t-md border-slate-600 border-2 relative">
       <div
         onClick={() => chat.isMinimized && handleMinimize(false)}
         className="text-white bg-slate-600 h-8 flex flex-row items-center justify-between px-2 py-1 cursor-pointer"
       >
         <div className="flex flex-row items-center gap-2">
           <img
-            className="h-6 w-6 rounded-full"
+            className="h-6 min-w-6 max-w-6 object-cover rounded-full"
             src={
               chat?.recipient?.profile?.picture
                 ? `${VITE_BACKEND_URL}${chat?.recipient?.profile?.picture}`
@@ -139,7 +139,7 @@ const ChatComponent = ({ chat }: Props) => {
                   >
                     {!isSender && (
                       <img
-                        className="h-6 w-6 rounded-full object-cover"
+                        className="h-6 min-w-6 max-w-6 rounded-full object-cover"
                         src={
                           message.sender?.profile?.picture
                             ? `${VITE_BACKEND_URL}${message.sender?.profile?.picture}`
