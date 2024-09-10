@@ -1,9 +1,6 @@
 import { toast } from "sonner";
 import fetchWithAuth from "./fetchWrapper";
 import { UserInput } from "../types/loginInput";
-import { store } from "../redux/store";
-import { signInSuccess } from "../redux/auth/auth-slice";
-import { jwtDecode } from "jwt-decode";
 import { ReactionTypes } from "../types/reaction.type.enum";
 
 const baseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -48,7 +45,6 @@ export const signIn = async (formData: UserInput) => {
 
 export const refreshAccessToken = async (refreshToken: string) => {
   try {
-    const dispatch = store.dispatch;
     const res = await fetch(baseUrl + "/api/refreshToken", {
       method: "POST",
       headers: {
@@ -57,16 +53,6 @@ export const refreshAccessToken = async (refreshToken: string) => {
       body: JSON.stringify({ refreshToken }),
     });
     const jsonData = await res.json();
-    const accessTokenPayload: { hasProfile: boolean } = jwtDecode(
-      jsonData.payload.accessToken
-    );
-    dispatch(
-      signInSuccess({
-        refreshToken,
-        accessToken: jsonData.payload.accessToken,
-        hasProfile: accessTokenPayload.hasProfile,
-      })
-    );
     return jsonData;
   } catch (err) {
     console.log(err);
@@ -180,7 +166,7 @@ export const getUserById = async (userId: string) => {
 
 export const getChatByRecipientId = async (recipientId: string) => {
   try {
-    const res = await fetchWithAuth(`/api/chat//${recipientId}/messages`, {
+    const res = await fetchWithAuth(`/api/chat/${recipientId}/messages`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -192,6 +178,37 @@ export const getChatByRecipientId = async (recipientId: string) => {
     toast.error("Error fetching user chat");
   }
 };
+
+export const getChatById = async (chatId: string) => {
+  try {
+    const res = await fetchWithAuth(`/api/chat/${chatId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error) {
+    console.log("Get user by id failed: " + error);
+    toast.error("Error fetching user chat");
+  }
+};
+
+export const fetchChats = async () => {
+  try {
+    const res = await fetchWithAuth(`/api/chat/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return await res;
+  } catch (error) {
+    console.log("Get user by id failed: " + error);
+    toast.error("Error fetching user chat");
+  }
+};
+
 export const completeSignup = async (formData: FormData) => {
   try {
     const data = await fetchWithAuth("/api/profile", {

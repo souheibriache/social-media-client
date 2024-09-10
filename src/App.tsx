@@ -1,6 +1,6 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home";
-import About from "./pages/About";
+import Messages from "./pages/Messages";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
@@ -45,9 +45,8 @@ const App = () => {
     <div className="h-full flex flex-col pt-14">
       <Header />
       <div className="flex-1">
-        <GlobalChatComponent />
+        {!location.href.includes("messages") ? <GlobalChatComponent /> : <></>}
         <Routes>
-          <Route path="/about" element={<About />} />
           <Route element={<AuthRoute />}>
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
@@ -55,6 +54,8 @@ const App = () => {
           <Route element={<PrivateRoute />}>
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/" element={<Home />} />
+            <Route path="/messages/" element={<Messages />} />
+            <Route path="/messages/:chatId" element={<Messages />} />
           </Route>
           <Route path="/complete-signup" element={<CompleteSignUp />} />
         </Routes>

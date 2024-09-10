@@ -6,17 +6,17 @@ import Search from "../components/Search";
 
 export default function Home() {
   return (
-    <div className="container flex gap-2 flex-row h-full bg-white mt-5">
+    <div className="container flex gap-2 flex-row h-full bg-white mt-5 home ">
       <div
         id="Invitations"
-        className="bg-slate-100 min-w-64 rounded-md flex flex-col justify-start h-full  overflow-y-auto"
+        className="bg-slate-100 w-1/4 rounded-md flex flex-col justify-start  overflow-y-auto "
       >
         <Invitations />
         <Friends />
       </div>
       <div
         id="Feed"
-        className="bg-slate-100 rounded-lg flex-1 basis-64 flex flex-col items-center justify-start h-full overflow-y-auto"
+        className="bg-slate-100 rounded-lg flex-1 flex flex-col items-center gap-2 py-2 justify-start overflow-y-auto"
       >
         <Search />
         <Post />

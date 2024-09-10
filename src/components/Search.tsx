@@ -27,7 +27,7 @@ const Search = ({}: Props) => {
     });
   };
   return (
-    <div className="mt-3 z-20 relative rounded-md shadow-md ">
+    <div className="z-20 relative rounded-md shadow-md">
       <form onSubmit={handleUsersSearch}>
         <div
           className={`flex flex-row w-96 bg-white justify-between h-10 items-center px-3 rounded-md ${

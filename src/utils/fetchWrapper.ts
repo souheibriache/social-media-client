@@ -4,6 +4,7 @@ import { store } from "../redux/store";
 import { resetUser } from "../redux/auth/user-slice";
 import { jwtDecode } from "jwt-decode";
 import { resetChat } from "../redux/auth/chat-slice";
+import { resetFeed } from "../redux/auth/feed-slice";
 
 const fetchWithAuth = async (url: string, options: any = {}) => {
   let { accessToken, refreshToken } = store.getState().auth;
@@ -31,6 +32,7 @@ const fetchWithAuth = async (url: string, options: any = {}) => {
   if (response.status === 401) {
     return await refreshAccessToken(refreshToken || "")
       .then(async (refreshResponse) => {
+        console.log({ refreshResponse });
         const accessTokenPayload: { hasProfile: boolean } = jwtDecode(
           refreshResponse.accessToken
         );
@@ -49,6 +51,7 @@ const fetchWithAuth = async (url: string, options: any = {}) => {
         dispatch(resetAuth());
         dispatch(resetUser());
         dispatch(resetChat());
+        dispatch(resetFeed());
         window.location.href = "/sign-in";
         return;
       });

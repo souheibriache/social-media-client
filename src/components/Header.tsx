@@ -5,6 +5,7 @@ import { useState } from "react";
 import { resetUser } from "../redux/auth/user-slice";
 import { resetAuth } from "../redux/auth/auth-slice";
 import { resetChat } from "../redux/auth/chat-slice";
+import { resetFeed } from "../redux/auth/feed-slice";
 
 const Header = () => {
   const { VITE_BACKEND_URL } = import.meta.env;
@@ -17,10 +18,11 @@ const Header = () => {
     dispatch(resetUser());
     dispatch(resetAuth());
     dispatch(resetChat());
+    dispatch(resetFeed());
   };
   return (
     <div className="bg-slate-200 fixed w-full top-0 z-30 ">
-      <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
+      <div className="flex justify-between items-center max-w-6xl mx-auto p-3 font-semibold">
         <Link to={"/"}>
           <h1 className="font-bold">Social-app</h1>
         </Link>
@@ -28,8 +30,8 @@ const Header = () => {
           <Link to={"/"}>
             <li>Home</li>
           </Link>
-          <Link to={"/about"}>
-            <li>About Us</li>
+          <Link to={"/messages"}>
+            <li>Messages</li>
           </Link>
           {!currentUser ? (
             <Link to={"/sign-in"}>

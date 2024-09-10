@@ -10,6 +10,7 @@ import {
 } from "../redux/auth/chat-slice";
 import { useDispatch, useSelector } from "react-redux";
 import useSocket from "../utils/socket";
+import { formatTimeStamp } from "../utils/methods";
 
 type Props = {
   chat: ChatType;
@@ -114,22 +115,6 @@ const ChatComponent = ({ chat }: Props) => {
             ) : (
               chat.messages.map((message: MessageType, index: number) => {
                 const isSender = message.sender._id === currentUser?.userId;
-                const messageTimestamp = new Date(message.timestamp);
-                const today = new Date();
-                const isToday =
-                  messageTimestamp.getDate() === today.getDate() &&
-                  messageTimestamp.getMonth() === today.getMonth() &&
-                  messageTimestamp.getFullYear() === today.getFullYear();
-                const formattedTimestamp = isToday
-                  ? messageTimestamp.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  : `${messageTimestamp.toLocaleDateString()} ${messageTimestamp.toLocaleTimeString(
-                      [],
-                      { hour: "2-digit", minute: "2-digit" }
-                    )}`;
-
                 return (
                   <div
                     key={index}
@@ -163,7 +148,7 @@ const ChatComponent = ({ chat }: Props) => {
                         </p>
                       </div>
                       <span className="text-xs text-gray-500 invisible group-hover:visible">
-                        {formattedTimestamp}
+                        {formatTimeStamp(message.timestamp)}
                       </span>
                     </div>
                   </div>

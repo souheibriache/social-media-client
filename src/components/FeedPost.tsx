@@ -148,7 +148,7 @@ const FeedPost = ({
   }, [currentReaction]);
 
   return (
-    <div className="relative bg-white rounded-md shadow-md w-full h-fit flex flex-col py-3 gap-2 overflow-hidden">
+    <div className="relative bg-white rounded-md shadow-md w-full flex flex-col py-3 gap-2 overflow-hidden">
       <div className="flex flex-row w-full px-3">
         <Link to={`/profile/${post?.user._id}`}>
           <img

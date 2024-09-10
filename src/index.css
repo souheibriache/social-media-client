@@ -69,7 +69,30 @@
   }
 }
 
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: rgb(196, 196, 196);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  width: 5px;
+  background-color: rgb(232, 231, 231);;
+  border-radius: 5px;
+  
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(196, 198, 200);
+  border-radius: 5px;
+}
+
 #root{
-  height: 98vh;
-  max-height: 98vh;
+  height: 93vh;
+  max-height: 93vh;
+  min-height: 93vh;
+}
+
+.chats, .home {
+  height: 88vh;
 }

@@ -27,7 +27,6 @@ const Feed = ({}: Props) => {
       await getFeed(1)
         .then((response) => {
           dispatch(fetchFeedSuccess(response?.payload?.data));
-          console.log({ posts: response.payload.data });
         })
         .catch((error) => {
           toast.error(error.message);
@@ -37,7 +36,7 @@ const Feed = ({}: Props) => {
     getUserFeed();
   }, []);
   return (
-    <div className="relative w-96 flex flex-col gap-2 mt-2 items-center h-full">
+    <div className="relative w-96 flex flex-col gap-2 items-center ">
       <CommentsComponent
         postId={currentCommentsPostId}
         visible={commentsVisible}
