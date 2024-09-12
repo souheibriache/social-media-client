@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import defaultImage from "../assets/default-user.jpg";
-import { Loader, Menu, MessageCircle, SendHorizonal } from "lucide-react";
+import {
+  DotSquare,
+  Loader,
+  Menu,
+  MessageCircle,
+  SendHorizonal,
+  TypeIcon,
+} from "lucide-react";
 import { formatTimeStamp } from "../utils/methods";
 import { getChatById } from "../utils/api";
 import { toast } from "sonner";
@@ -18,6 +25,7 @@ const Chat = ({ chatId }: Props) => {
   const [messageContent, setMessageContent] = useState<string>("");
   const [messages, setMessages] = useState<any>([]);
   const [chatUser, setChatUser] = useState<any>(null);
+  const [typing, setTyping] = useState<any>(null);
   const [lastMessage, setLastMessage] = useState<any>(null);
   const chatRef = useRef<HTMLDivElement>(null);
   const socket = useSocket();
@@ -42,12 +50,13 @@ const Chat = ({ chatId }: Props) => {
     setMessageContent("");
     setMessages([]);
     setLastMessage(null);
+    socket?.emit("typing", JSON.stringify({ chatId, typing: false }));
 
     const getMessages = async () => {
       await getChatById(chatId as string)
         .then((response) => {
-          setMessages(response.data.messages);
-          setChatUser(response.data.recipient);
+          setMessages(response.data?.messages);
+          setChatUser(response.data?.recipient);
         })
         .catch((error) => {
           toast.error(error.message);
@@ -69,7 +78,7 @@ const Chat = ({ chatId }: Props) => {
         behavior: "smooth",
       });
     }
-  }, [messages, lastMessage]);
+  }, [messages, lastMessage, typing]);
 
   // Listen for `message_seen` event and update the last seen message
   useEffect(() => {
@@ -93,17 +102,47 @@ const Chat = ({ chatId }: Props) => {
         }
       };
 
+      const handleTyping = (data: any) => {
+        const {
+          chatId: typingChatId,
+          typing: typingTyping,
+          currentUser: typingCurrentUser,
+        } = data;
+
+        if (chatId === typingChatId) {
+          setTyping(() =>
+            typingTyping
+              ? { typing: typingTyping, currentUser: typingCurrentUser }
+              : null
+          );
+        }
+      };
+
+      socket.on("typing", handleTyping);
       socket.on("message_seen", handleMessageSeen);
       socket.on("message_sent", handleMessageSent);
       socket.on("new_message", handleNewMessage);
 
       return () => {
+        socket.on("typing", handleTyping);
         socket.off("message_seen", handleMessageSeen);
         socket.off("message_sent", handleMessageSent);
         socket.off("new_message", handleNewMessage);
       };
     }
   }, [socket, chatId]);
+
+  useEffect(() => {
+    console.log({ typing });
+  }, [typing]);
+
+  const handleOnChange = (e: any) => {
+    setMessageContent(e.target.value);
+    socket?.emit(
+      "typing",
+      JSON.stringify({ chatId, typing: !(e.target.value.trim() === "") })
+    );
+  };
 
   return (
     <div className="w-full flex flex-col items-center h-full">
@@ -138,7 +177,7 @@ const Chat = ({ chatId }: Props) => {
         {chatId ? (
           loading ? (
             <Loader className="animate-spin m-auto text-slate-900" />
-          ) : !messages.length ? (
+          ) : !messages?.length ? (
             <div className="w-full flex flex-col items-center gap-3">
               <img
                 className="h-20 w-20 rounded-full object-cover"
@@ -191,6 +230,27 @@ const Chat = ({ chatId }: Props) => {
                     Seen at: {formatTimeStamp(lastMessage.seenAt)}
                   </p>
                 )}
+
+              {typing && typing.typing && typing.currentUser ? (
+                <div className="flex flex-row items-center gap-1">
+                  <img
+                    className="h-8 w-8 rounded-full object-cover"
+                    src={
+                      typing.currentUser.profile.picture
+                        ? VITE_BACKEND_URL + typing.currentUser.profile.picture
+                        : defaultImage
+                    }
+                    alt=""
+                  />
+                  <div className="flex space-x-1 px-2 bg-slate-200 rounded-md py-3 justify-center items-cente dark:invert">
+                    <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.3s]"></div>
+                    <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.15s]"></div>
+                    <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce"></div>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
             </>
           )
         ) : (
@@ -211,7 +271,7 @@ const Chat = ({ chatId }: Props) => {
             className="p-3 h-12 w-full rounded-md border focus:outline-none"
             placeholder="Type your message"
             value={messageContent}
-            onChange={(e) => setMessageContent(e.target.value)}
+            onChange={(e) => handleOnChange(e)}
           />
           <button
             type="submit"

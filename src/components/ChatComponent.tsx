@@ -19,6 +19,7 @@ type Props = {
 const ChatComponent = ({ chat }: Props) => {
   const dispatch = useDispatch();
   const [messageContent, setMessageContent] = useState("");
+  const [typing, setTyping] = useState<any>(null); // Add typing state
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { VITE_BACKEND_URL } = import.meta.env;
 
@@ -46,17 +47,29 @@ const ChatComponent = ({ chat }: Props) => {
     setMessageContent(""); // Clear the input field
   };
 
+  // Scroll to the bottom when messages change
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollTo({
-        top: messagesEndRef.current.scrollHeight,
-        behavior: "smooth",
-      });
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
     }
   }, [chat]);
 
+  // Listen for typing and new message events
   useEffect(() => {
     if (socket) {
+      const handleTyping = (data: any) => {
+        const {
+          chatId: typingChatId,
+          typing: typingTyping,
+          currentUser: typingCurrentUser,
+        } = data;
+        if (chat._id === typingChatId) {
+          setTyping(typingTyping ? typingCurrentUser : null);
+        }
+      };
+
+      socket.on("typing", handleTyping);
+
       socket.on("message_sent", (message) => {
         dispatch(sendMessage({ chatId: chat._id, message }));
       });
@@ -64,15 +77,23 @@ const ChatComponent = ({ chat }: Props) => {
       socket.on("new_message", (message) => {
         dispatch(sendMessage({ chatId: chat._id, message }));
       });
-      if (messagesEndRef.current) {
-        messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
-      }
+
       return () => {
+        socket.off("typing", handleTyping);
         socket.off("new_message");
         socket.off("message_sent");
       };
     }
-  }, [socket]);
+  }, [socket, chat]);
+
+  // Handle typing event when user types a message
+  const handleOnChange = (e: any) => {
+    setMessageContent(e.target.value);
+    socket?.emit(
+      "typing",
+      JSON.stringify({ chatId: chat._id, typing: !!e.target.value.trim() })
+    );
+  };
 
   return (
     <div className="w-full flex flex-col bg-slate-500 min-w-80 max-w-64 max-h-80 rounded-t-md border-slate-600 border-2 relative">
@@ -155,6 +176,24 @@ const ChatComponent = ({ chat }: Props) => {
                 );
               })
             )}
+            {typing && (
+              <div className="flex items-center gap-2">
+                <img
+                  className="h-6 w-6 rounded-full object-cover"
+                  src={
+                    typing.profile.picture
+                      ? `${VITE_BACKEND_URL}${typing.profile.picture}`
+                      : defaultImage
+                  }
+                  alt={typing.userName}
+                />
+                <div className="flex space-x-1 px-2 bg-slate-200 rounded-md py-1 justify-center items-center dark:invert">
+                  <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="h-2 w-2 rounded-full bg-slate-500 animate-bounce"></div>
+                </div>
+              </div>
+            )}
           </div>
           <div className="w-full bg-white">
             <form
@@ -164,7 +203,7 @@ const ChatComponent = ({ chat }: Props) => {
               <input
                 type="text"
                 value={messageContent}
-                onChange={(e) => setMessageContent(e.target.value)}
+                onChange={handleOnChange} // Use handleOnChange here
                 className="w-full px-2 py-2 text-slate-800 text-sm border-none outline-none"
                 placeholder="Write a message..."
               />
