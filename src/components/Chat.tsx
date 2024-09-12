@@ -1,13 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import defaultImage from "../assets/default-user.jpg";
-import {
-  DotSquare,
-  Loader,
-  Menu,
-  MessageCircle,
-  SendHorizonal,
-  TypeIcon,
-} from "lucide-react";
+import { Loader, Menu, MessageCircle, SendHorizonal } from "lucide-react";
 import { formatTimeStamp } from "../utils/methods";
 import { getChatById } from "../utils/api";
 import { toast } from "sonner";
